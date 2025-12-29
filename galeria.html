@@ -70,8 +70,8 @@
         /* Estilo de cada foto individual */
         .photo-item {
             margin-bottom: 15px;
-            break-inside: avoid; /* Evita cortes extraños */
-            opacity: 0; /* Animación de entrada: invisible al inicio */
+            break-inside: avoid;
+            opacity: 0; /* Animación de entrada */
             animation: aparecer 0.6s ease-out forwards;
         }
 
@@ -82,16 +82,14 @@
             display: block;
             transition: transform 0.3s ease;
             box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-            background-color: #222; /* Fondo gris mientras carga */
+            background-color: #222;
         }
 
-        /* Efecto al tocar/pasar mouse sobre la foto */
         .photo-item img:hover {
             transform: scale(1.02);
             filter: brightness(1.1);
         }
 
-        /* Animación suave al cargar */
         @keyframes aparecer {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -109,77 +107,3 @@
             border: 1px solid white;
             color: white;
             text-decoration: none;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 13px;
-            transition: background 0.3s, color 0.3s;
-            border-radius: 4px;
-        }
-
-        .btn-descarga:hover {
-            background: white;
-            color: black;
-        }
-    </style>
-</head>
-<body>
-
-    <header>
-        <h1>Mejores Momentos</h1>
-        <a href="index.html" class="volver-btn">← Volver al Inicio</a>
-    </header>
-
-    <div class="gallery-container" id="galeria">
-        </div>
-
-    <div class="footer-action">
-        <p style="margin-bottom: 25px; color: #888;">¿Quieres descargar los originales?</p>
-        
-        <a href="#" target="_blank" class="btn-descarga">
-            Ver Álbum Completo ☁️
-        </a>
-    </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // --- CONFIGURACIÓN ---
-            const totalFotos = 113;             // Total de fotos que tienes
-            const carpeta = "fotos/";           // Nombre de la carpeta
-            
-            // CONFIGURACIÓN DE NOMBRES (Según Windows)
-            // Esto busca: foto (1).jpg, foto (2).jpg ...
-            const nombreInicio = "foto (";
-            const nombreFin = ").jpg";
-            
-            const contenedor = document.getElementById('galeria');
-
-            for (let i = 1; i <= totalFotos; i++) {
-                // 1. Crear el espacio para la foto
-                const div = document.createElement('div');
-                div.className = 'photo-item';
-                // Retraso escalonado para que aparezcan elegante (opcional)
-                div.style.animationDelay = `${i * 0.05}s`; 
-
-                // 2. Crear la imagen
-                const img = document.createElement('img');
-                
-                // Construye el nombre: "fotos/" + "foto (" + NUMERO + ").jpg"
-                img.src = `${carpeta}${nombreInicio}${i}${nombreFin}`;
-                
-                img.alt = `Foto recuerdo ${i}`;
-                img.loading = "lazy"; // TRUCO DE ORO: Carga rápido solo lo que ves
-
-                // 3. Si una foto falla (no existe), ocultamos el hueco
-                img.onerror = function() { 
-                    this.parentElement.style.display = 'none'; 
-                };
-
-                // 4. Meter todo al HTML
-                div.appendChild(img);
-                contenedor.appendChild(div);
-            }
-        });
-    </script>
-
-</body>
-</html>
