@@ -1,1 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galería - Promoción 2025</title>
+    <style>
+        /* --- ESTILOS GENERALES --- */
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #111; /* Fondo oscuro elegante */
+            color: #fff;
+        }
 
+        /* Cabecera */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(to bottom, #000, #111);
+        }
+        
+        h1 {
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin: 0 0 10px 0;
+            text-transform: uppercase;
+            font-size: 24px;
+        }
+
+        .volver-btn {
+            display: inline-block;
+            margin-top: 10px;
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+            border-bottom: 1px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .volver-btn:hover {
+            color: #fff;
+            border-bottom: 1px solid #fff;
+        }
+
+        /* --- GRILLA TIPO PINTEREST (MASONRY) --- */
+        .gallery-container {
+            column-count: 3; /* 3 columnas en PC */
+            column-gap: 15px;
+            padding: 15px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Tablet (2 columnas) */
+        @media (max-width: 800px) {
+            .gallery-container {
+                column-count: 2; 
+            }
+        }
+
+        /* Celular (1 columna) */
+        @media (max-width: 500px) {
+            .gallery-container {
+                column-count: 1; 
+            }
+        }
+
+        /* Estilo de cada foto individual */
+        .photo-item {
+            margin-bottom: 15px;
+            break-inside: avoid; /* Evita cortes extraños */
+            opacity: 0; /* Animación de entrada: invisible al inicio */
+            animation: aparecer 0.6s ease-out forwards;
+        }
+
+        .photo-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            display: block;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            background-color: #222; /* Fondo gris mientras carga */
+        }
+
+        /* Efecto al tocar/pasar mouse sobre la foto */
+        .photo-item img:hover {
+            transform: scale(1.02);
+            filter: brightness(1.1);
+        }
+
+        /* Animación suave al cargar */
+        @keyframes aparecer {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- PIE DE PÁGINA --- */
+        .footer-action {
+            text-align: center;
+            padding: 60px 20px;
+            background-color: #0a0a0a;
+        }
+
+        .btn-descarga {
+            padding: 15px 30px;
+            border: 1px solid white;
+            color: white;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 13px;
+            transition: background 0.3s, color 0.3s;
+            border-radius: 4px;
+        }
+
+        .btn-descarga:hover {
+            background: white;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Mejores Momentos</h1>
+        <a href="index.html" class="volver-btn">← Volver al Inicio</a>
+    </header>
+
+    <div class="gallery-container" id="galeria">
+        </div>
+
+    <div class="footer-action">
+        <p style="margin-bottom: 25px; color: #888;">¿Quieres descargar los originales?</p>
+        
+        <a href="#" target="_blank" class="btn-descarga">
+            Ver Álbum Completo ☁️
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // --- CONFIGURACIÓN ---
+            const totalFotos = 113;             // Total de fotos que tienes
+            const carpeta = "fotos/";           // Nombre de la carpeta
+            
+            // CONFIGURACIÓN DE NOMBRES (Según Windows)
+            // Esto busca: foto (1).jpg, foto (2).jpg ...
+            const nombreInicio = "foto (";
+            const nombreFin = ").jpg";
+            
+            const contenedor = document.getElementById('galeria');
+
+            for (let i = 1; i <= totalFotos; i++) {
+                // 1. Crear el espacio para la foto
+                const div = document.createElement('div');
+                div.className = 'photo-item';
+                // Retraso escalonado para que aparezcan elegante (opcional)
+                div.style.animationDelay = `${i * 0.05}s`; 
+
+                // 2. Crear la imagen
+                const img = document.createElement('img');
+                
+                // Construye el nombre: "fotos/" + "foto (" + NUMERO + ").jpg"
+                img.src = `${carpeta}${nombreInicio}${i}${nombreFin}`;
+                
+                img.alt = `Foto recuerdo ${i}`;
+                img.loading = "lazy"; // TRUCO DE ORO: Carga rápido solo lo que ves
+
+                // 3. Si una foto falla (no existe), ocultamos el hueco
+                img.onerror = function() { 
+                    this.parentElement.style.display = 'none'; 
+                };
+
+                // 4. Meter todo al HTML
+                div.appendChild(img);
+                contenedor.appendChild(div);
+            }
+        });
+    </script>
+
+</body>
+</html>
