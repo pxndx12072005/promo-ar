@@ -1,1 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bienvenidos - Promoción 2025</title>
+    <style>
+        /* --- ESTILOS GENERALES Y MINIMALISTAS --- */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #ffffff; /* Fondo blanco limpio */
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden; /* Bloquea scroll durante el intro */
+        }
 
+        /* Contenedor del menú principal */
+        .container {
+            text-align: center;
+            opacity: 0; /* Invisible al inicio */
+            transition: opacity 1.5s ease-in;
+            z-index: 10;
+            width: 90%;
+            max-width: 400px;
+        }
+
+        h1 {
+            font-weight: 300;
+            letter-spacing: 3px;
+            margin-bottom: 50px;
+            font-size: 24px;
+            text-transform: uppercase;
+        }
+
+        /* --- BOTONES MINIMALISTAS --- */
+        .btn-minimal {
+            display: block;
+            width: 100%;
+            padding: 15px 0;
+            margin: 20px 0;
+            background-color: transparent;
+            border: 1px solid #333; /* Borde fino elegante */
+            color: #333;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .btn-minimal:hover {
+            background-color: #333;
+            color: #fff;
+            transform: scale(1.02); /* Pequeño efecto al pasar el mouse */
+        }
+
+        /* --- CAPA DE VIDEO INTRO --- */
+        #intro-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: black;
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease-out, visibility 1s ease-out;
+        }
+
+        #intro-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            
+            /* ESTO EVITA LA DEFORMACIÓN */
+            object-fit: cover; /* Llena la pantalla recortando lo que sobre */
+            object-position: center; /* Mantiene el centro del video visible */
+        }
+
+        /* Clase para ocultar el intro */
+        .ocultar {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="intro-overlay">
+        <video id="intro-video" 
+               src="https://res.cloudinary.com/dlq9ygm8f/video/upload/v1766980723/Animaci%C3%B3n_de_logo_zorro_y_texto_yj23kf.mp4" 
+               autoplay muted playsinline webkit-playsinline></video>
+    </div>
+
+    <div class="container" id="menu-principal">
+        <h1>Recuerdo de Promoción</h1>
+        
+        <a href="ar.html" class="btn-minimal">
+            ✨ Experiencia AR
+        </a>
+
+        <a href="PEGAR_AQUI_TU_LINK_DE_GOOGLE_PHOTOS" target="_blank" class="btn-minimal">
+            📸 Galería de Fotos
+        </a>
+    </div>
+
+    <script>
+        const video = document.getElementById('intro-video');
+        const overlay = document.getElementById('intro-overlay');
+        const menu = document.getElementById('menu-principal');
+
+        // Función para terminar el intro
+        function finalizarIntro() {
+            overlay.classList.add('ocultar'); // Desvanece el video
+            menu.style.opacity = '1';         // Muestra el menú
+            document.body.style.overflow = 'auto'; // Reactiva scroll
+            
+            // Eliminamos el video del código para ahorrar batería/recursos
+            setTimeout(() => {
+                video.pause();
+                overlay.style.display = 'none';
+            }, 1000);
+        }
+
+        // 1. Cuando el video termina, ejecutar la función
+        video.onended = function() {
+            finalizarIntro();
+        };
+
+        // 2. SEGURIDAD: Si por alguna razón el video falla o tarda mucho (5 seg), entrar igual
+        setTimeout(() => {
+            if (!video.ended && video.paused) {
+                console.log("Video tardó mucho, forzando entrada.");
+                finalizarIntro();
+            }
+        }, 6000); 
+
+        // 3. OPCIONAL: Permitir saltar intro al tocar la pantalla
+        overlay.addEventListener('click', finalizarIntro);
+    </script>
+
+</body>
+</html>
