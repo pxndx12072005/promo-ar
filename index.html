@@ -9,26 +9,61 @@
     <script>
       document.addEventListener("DOMContentLoaded", function() {
         const scene = document.querySelector('a-scene');
-        const videoID = "#videoPromo";
+        const video = document.querySelector("#videoPromo"); // Referencia directa al video
+
+        // --- SOLUCIÓN PARA IPHONE / AUDIO ---
+        // Esto le dice al celular: "Si tocan la pantalla, quita el silencio"
+        document.body.addEventListener('click', function() {
+          if (video.muted) {
+            console.log("Activando audio...");
+            video.muted = false; // Quitar silencio
+            video.play();        // Asegurar reproducción
+          }
+        });
+        // -------------------------------------
+
+        // Bucle para crear los 23 targets
         for (let i = 0; i < 23; i++) {
           const entity = document.createElement('a-entity');
           entity.setAttribute('mindar-image-target', `targetIndex: ${i}`);
+          
           const videoEntity = document.createElement('a-video');
-          videoEntity.setAttribute('src', videoID);
+          videoEntity.setAttribute('src', "#videoPromo");
           videoEntity.setAttribute('position', '0 0 0');
           videoEntity.setAttribute('height', '0.6'); 
           videoEntity.setAttribute('width', '1.1'); 
           videoEntity.setAttribute('rotation', '0 0 0');
+          
           entity.appendChild(videoEntity);
           scene.appendChild(entity);
         }
       });
     </script>
+    
+    <style>
+      #aviso-audio {
+        position: fixed;
+        bottom: 20px;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        color: white;
+        z-index: 999;
+        font-family: sans-serif;
+        font-size: 14px;
+        pointer-events: none; /* Para que no bloquee los toques */
+        text-shadow: 1px 1px 2px black;
+      }
+    </style>
   </head>
+  
   <body>
+    <div id="aviso-audio">👆 Toca la pantalla para activar el sonido 🔊</div>
+
     <a-scene mindar-image="imageTargetSrc: ./targets.mind; filterMinCF:0.0001; filterBeta: 0.001;" 
              color-space="sRGB" renderer="colorManagement: true, physicallyCorrectLights" 
              vr-mode-ui="enabled: false" device-orientation-permission-ui="enabled: false">
+      
       <a-assets>
         <video id="videoPromo" 
                src="https://res.cloudinary.com/dlq9ygm8f/video/upload/v1766622561/Video_b8ds4b.mp4" 
@@ -40,8 +75,8 @@
                webkit-playsinline 
                crossorigin="anonymous"></video>
       </a-assets>
+
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
     </a-scene>
   </body>
-
 </html>
