@@ -5,105 +5,130 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Galería - Promoción 2025</title>
     <style>
-        /* --- ESTILOS GENERALES --- */
+        /* --- ESTILOS BÁSICOS (Sin animaciones complejas) --- */
         body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #111; /* Fondo oscuro elegante */
-            color: #fff;
+            background-color: #111111; /* Fondo Negro */
+            color: #ffffff; /* Texto Blanco */
         }
 
-        /* Cabecera */
         header {
             text-align: center;
-            padding: 40px 20px;
-            background: linear-gradient(to bottom, #000, #111);
+            padding: 30px 20px;
+            background-color: #000;
+            border-bottom: 2px solid #333;
         }
-        
-        h1 {
-            font-weight: 300;
-            letter-spacing: 2px;
-            margin: 0 0 10px 0;
-            text-transform: uppercase;
-            font-size: 24px;
-        }
+
+        h1 { margin: 0; text-transform: uppercase; letter-spacing: 2px; }
 
         .volver-btn {
             display: inline-block;
             margin-top: 10px;
-            color: #aaa;
+            color: #ccc;
             text-decoration: none;
-            font-size: 14px;
-            border-bottom: 1px solid transparent;
-            transition: all 0.3s;
-        }
-        
-        .volver-btn:hover {
-            color: #fff;
-            border-bottom: 1px solid #fff;
+            border: 1px solid #555;
+            padding: 5px 15px;
+            border-radius: 20px;
         }
 
-        /* --- GRILLA TIPO PINTEREST (MASONRY) --- */
+        /* --- GRILLA DE FOTOS --- */
         .gallery-container {
-            column-count: 3; /* 3 columnas en PC */
-            column-gap: 15px;
-            padding: 15px;
-            max-width: 1200px;
-            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            padding: 10px;
+            justify-content: center;
         }
 
-        /* Tablet (2 columnas) */
-        @media (max-width: 800px) {
-            .gallery-container {
-                column-count: 2; 
-            }
-        }
-
-        /* Celular (1 columna) */
-        @media (max-width: 500px) {
-            .gallery-container {
-                column-count: 1; 
-            }
-        }
-
-        /* Estilo de cada foto individual */
         .photo-item {
-            margin-bottom: 15px;
-            break-inside: avoid;
-            opacity: 0; /* Animación de entrada */
-            animation: aparecer 0.6s ease-out forwards;
+            width: 48%; /* 2 fotos por fila en celular */
+            margin: 1%;
+            background-color: #222;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        @media (min-width: 768px) {
+            .photo-item { width: 31%; } /* 3 fotos en PC */
         }
 
         .photo-item img {
             width: 100%;
             height: auto;
-            border-radius: 8px;
             display: block;
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
-            background-color: #222;
+            min-height: 100px; /* Para ver si carga algo */
         }
 
-        .photo-item img:hover {
-            transform: scale(1.02);
-            filter: brightness(1.1);
-        }
-
-        @keyframes aparecer {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- PIE DE PÁGINA --- */
+        /* --- BOTÓN FINAL --- */
         .footer-action {
             text-align: center;
-            padding: 60px 20px;
-            background-color: #0a0a0a;
+            padding: 50px 20px;
+            background-color: #000;
         }
 
         .btn-descarga {
-            padding: 15px 30px;
-            border: 1px solid white;
-            color: white;
+            background-color: white;
+            color: black;
+            padding: 15px 25px;
             text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Galería de Fotos</h1>
+        <a href="index.html" class="volver-btn">← Volver al Inicio</a>
+    </header>
+
+    <div class="gallery-container" id="galeria">
+        <p style="width:100%; text-align:center; color: #555;">Cargando imágenes...</p>
+    </div>
+
+    <div class="footer-action">
+        <p>¿Quieres descargar los originales?</p>
+        <a href="https://drive.google.com/" class="btn-descarga">Ver Álbum Completo</a>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // --- CONFIGURACIÓN ---
+            const totalFotos = 113; 
+            const carpeta = "fotos/";
+            
+            // INTENTA ESTO PRIMERO:
+            const nombreInicio = "f(";
+            const nombreFin = ").jpg"; // <--- ¿Es .jpg o .JPG?
+            
+            const contenedor = document.getElementById('galeria');
+            contenedor.innerHTML = ""; // Limpiar mensaje de carga
+
+            for (let i = 1; i <= totalFotos; i++) {
+                const div = document.createElement('div');
+                div.className = 'photo-item';
+
+                const img = document.createElement('img');
+                // Construye ruta: fotos/f (1).jpg
+                img.src = carpeta + nombreInicio + i + nombreFin;
+                img.alt = "Foto " + i;
+                img.loading = "lazy";
+                
+                // Si la imagen falla, mostramos un borde rojo en vez de ocultarla
+                // Así sabrás si el archivo existe o no.
+                img.onerror = function() {
+                    this.style.border = "2px solid red"; 
+                    this.alt = "Error: No encontrada";
+                };
+
+                div.appendChild(img);
+                contenedor.appendChild(div);
+            }
+        });
+    </script>
+
+</body>
+</html>
