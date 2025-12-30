@@ -11,18 +11,21 @@
             padding: 0;
             height: 100%;
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: #ffffff; /* Fondo blanco limpio */
-            color: #333;
+            
+            /* CAMBIO: FONDO NEGRO Y LETRAS BLANCAS */
+            background-color: #000000; 
+            color: #ffffff; 
+            
             display: flex;
             justify-content: center;
             align-items: center;
-            overflow: hidden; /* Bloquea scroll durante el intro */
+            overflow: hidden; 
         }
 
         /* Contenedor del menú principal */
         .container {
             text-align: center;
-            opacity: 0; /* Invisible al inicio */
+            opacity: 0; 
             transition: opacity 1.5s ease-in;
             z-index: 10;
             width: 90%;
@@ -35,17 +38,21 @@
             margin-bottom: 50px;
             font-size: 24px;
             text-transform: uppercase;
+            color: #ffffff; /* Título blanco */
         }
 
-        /* --- BOTONES MINIMALISTAS --- */
+        /* --- BOTONES MINIMALISTAS (INVERTIDOS) --- */
         .btn-minimal {
             display: block;
             width: 100%;
             padding: 15px 0;
             margin: 20px 0;
             background-color: transparent;
-            border: 1px solid #333; /* Borde fino elegante */
-            color: #333;
+            
+            /* CAMBIO: BORDE BLANCO Y TEXTO BLANCO */
+            border: 1px solid #ffffff; 
+            color: #ffffff;
+            
             text-decoration: none;
             text-transform: uppercase;
             font-size: 14px;
@@ -55,9 +62,10 @@
         }
 
         .btn-minimal:hover {
-            background-color: #333;
-            color: #fff;
-            transform: scale(1.02); /* Pequeño efecto al pasar el mouse */
+            /* CAMBIO: AL PASAR MOUSE, FONDO BLANCO Y LETRA NEGRA */
+            background-color: #ffffff;
+            color: #000000;
+            transform: scale(1.02);
         }
 
         /* --- CAPA DE VIDEO INTRO --- */
@@ -81,15 +89,11 @@
             left: 0;
             width: 100%;
             height: 100%;
-            
-            /* ESTO EVITA LA DEFORMACIÓN */
-            object-fit: contain;
-            background-color: white;
-            
-            object-position: center; /* Mantiene el centro del video visible */
+            object-fit: contain; 
+            background-color: black;
+            object-position: center; 
         }
 
-        /* Clase para ocultar el intro */
         .ocultar {
             opacity: 0;
             visibility: hidden;
@@ -101,7 +105,7 @@
 
     <div id="intro-overlay">
         <video id="intro-video" 
-               src="https://res.cloudinary.com/dlq9ygm8f/video/upload/v1766982873/intro_2_kl6nws.mp4" 
+               src="https://res.cloudinary.com/dlq9ygm8f/video/upload/v1767060021/logodark_1_d2gxjm.mp4" 
                autoplay muted playsinline webkit-playsinline></video>
     </div>
 
@@ -122,33 +126,28 @@
         const overlay = document.getElementById('intro-overlay');
         const menu = document.getElementById('menu-principal');
 
-        // Función para terminar el intro
         function finalizarIntro() {
-            overlay.classList.add('ocultar'); // Desvanece el video
-            menu.style.opacity = '1';         // Muestra el menú
-            document.body.style.overflow = 'auto'; // Reactiva scroll
+            overlay.classList.add('ocultar'); 
+            menu.style.opacity = '1';         
+            document.body.style.overflow = 'auto'; 
             
-            // Eliminamos el video del código para ahorrar batería/recursos
             setTimeout(() => {
                 video.pause();
                 overlay.style.display = 'none';
             }, 1000);
         }
 
-        // 1. Cuando el video termina, ejecutar la función
         video.onended = function() {
             finalizarIntro();
         };
 
-        // 2. SEGURIDAD: Si por alguna razón el video falla o tarda mucho (5 seg), entrar igual
         setTimeout(() => {
             if (!video.ended && video.paused) {
-                console.log("Video tardó mucho, forzando entrada.");
+                console.log("Forzando entrada.");
                 finalizarIntro();
             }
         }, 6000); 
 
-        // 3. OPCIONAL: Permitir saltar intro al tocar la pantalla
         overlay.addEventListener('click', finalizarIntro);
     </script>
 
